@@ -16,8 +16,9 @@ import numpy as np
             list.append(p_ai)
     return list '''
 
+
 def decodificate():
-   return ""
+    return ""
 
 
 def get_codeword(poly, values_coefficients, alpha):
@@ -26,43 +27,45 @@ def get_codeword(poly, values_coefficients, alpha):
         codeword += str(poly.subs(x, val) % alpha)
     return codeword
 
+
 def polinomio(coefficients, values_coefficients):
     list = []
     # Generar todas las posibles combinaciones de coeficientes en el alfabeto
-    coef_combinations = itertools.product(values_coefficients, repeat=len(coefficients))
+    coef_combinations = itertools.product(
+        values_coefficients, repeat=len(coefficients))
     for coef in coef_combinations:
-        p = sympy.Poly(sum([coef[i] * x**i for i in range(d)]), x)
+        p = sympy.Poly(sum([coef[i] * x**i for i in range(k)]), x)
         list.append(p.as_expr())
     return list
 
-def generator_matrix(values_coefficients, d, alpha):
-   matrix = np.zeros((d, len(values_coefficients)))
-   for i in range (d):
-      for j in range (len(values_coefficients)):
-         if i == 0:
-            matrix[i][j] = 1
-         else:
-            matrix[i][j] = ((values_coefficients[j]**i)%alpha)
-   return matrix
+
+def generator_matrix(values_coefficients, k, alpha):
+    matrix = np.zeros((k, len(values_coefficients)))
+    for i in range(k):
+        for j in range(len(values_coefficients)):
+            matrix[i][j] = ((values_coefficients[j]**i) % alpha)
+    return matrix
+
 
 d = 9999
 n = int(input("Enter lenght of code: "))
 while n <= 0:
-  n = int(input("Enter lenght of code again, this can´t be less than zero: : "))
+    n = int(input("Enter lenght of code again, this can´t be less than zero: : "))
 
 d = int(input("Enter the minimun distance: "))
 while (n < d or d < 0):
-  d = int(input("Enter the minimun distance: "))
+    d = int(input("Enter the minimun distance: "))
 
 alpha = int(input("Which alphabet do you want to work in? \n Enter the number that you wanna do: \n 2- Binary \n 3- Ternary \n 4- Quaternary \n or more... \n"))
 
 while alpha < 2:
-  alpha = int(input("Which alphabet do you want to work in? \n Enter the number that you wanna do: \n 2- Binary \n 3- Ternary \n 4- Quaternary \n or more... \n"))
+    alpha = int(input("Which alphabet do you want to work in? \n Enter the number that you wanna do: \n 2- Binary \n 3- Ternary \n 4- Quaternary \n or more... \n"))
 
-
-#We need to find the polinomies of the code
+# Calculate the degree
+k = n - d + 1
+# We need to find the polinomies of the code
 x = sympy.symbols('x')
-coefficients = [sympy.symbols('a%d' % i) for i in range(d)]
+coefficients = [sympy.symbols('a%d' % i) for i in range(k)]
 print("coeficients: ", coefficients)
 
 values_coefficients = list(range(alpha))
@@ -76,6 +79,7 @@ for poly in polynomies:
     print(poly)
     C.append(get_codeword(poly, values_coefficients, alpha))
 
-print("Codewords: ", C)
+print("Codewords: ", C, "\n Total codewords: ", len(C))
 
-print("Generator matrix: " , generator_matrix(values_coefficients, d, alpha))
+
+print("Generator matrix: \n", generator_matrix(values_coefficients, k, alpha))
