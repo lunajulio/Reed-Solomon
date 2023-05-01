@@ -16,6 +16,10 @@ import numpy as np
             list.append(p_ai)
     return list '''
 
+def decodificate():
+   return ""
+
+
 def get_codeword(poly, values_coefficients, alpha):
     codeword = ""
     for val in values_coefficients:
