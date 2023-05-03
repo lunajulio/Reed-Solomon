@@ -88,7 +88,7 @@ for fila in gen_matrix:
     print([int(i) for i in fila])
 
 
-# Calcular la forma escalonada reducida por filas de la matriz en Z5
+# Calcular la forma escalonada reducida por filas de la matriz en Z_alpha
 for i in range(len(gen_matrix)):
     # Encontrar el índice de la primera entrada no nula en la fila i
     pivot = -1
@@ -99,18 +99,25 @@ for i in range(len(gen_matrix)):
     if pivot == -1:
         continue
     # Hacer la entrada pivot de la fila i igual a 1
-    factor = pow(int(gen_matrix[i][pivot]), -1, 5)
+    factor = pow(int(gen_matrix[i][pivot]), -1, alpha)
     for j in range(len(gen_matrix[i])):
-        gen_matrix[i][j] = gen_matrix[i][j] * factor % 5
+        gen_matrix[i][j] = gen_matrix[i][j] * factor % alpha
     # Hacer las otras entradas en la columna pivot iguales a cero
     for j in range(len(gen_matrix)):
         if j != i and gen_matrix[j][pivot] != 0:
             factor = gen_matrix[j][pivot]
             for k in range(len(gen_matrix[j])):
                 gen_matrix[j][k] = (gen_matrix[j][k] -
-                                    factor * gen_matrix[i][k]) % 5
+                                    factor * gen_matrix[i][k]) % alpha
 
-# Imprimir la matriz escalonada reducida por filas en Z5
+# Imprimir la matriz escalonada reducida por filas en Z_alpha
 print("Generator matrix in standard form:")
 for fila in gen_matrix:
     print([int(i) for i in fila])
+
+for fila in gen_matrix:
+    ecuacion = 0
+    for i in range(len(fila)):
+        ecuacion += int(fila[i]) * sympy.Symbol(f'x_{i+1}')
+    ecuacion = sympy.Eq(ecuacion, 0)
+    print(sympy.latex(ecuacion, mode='inline'))
