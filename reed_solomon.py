@@ -1,6 +1,7 @@
 import sympy
 import itertools
 import numpy as np
+from sympy import *
 
 '''def polinomio(coeficients, values_coeficients):
     list = []
@@ -45,6 +46,35 @@ def generator_matrix(values_coefficients, k, alpha):
         for j in range(len(values_coefficients)):
             matrix[i][j] = ((values_coefficients[j]**i) % alpha)
     return matrix
+
+
+def calcular_ecuaciones(coeficientes, posicion_despeje):
+    # cantidad de variables
+    vars = ["" for i in range(len(coeficientes))]
+
+    # Creamos una lista con las variables
+    for i in range(len(vars)):
+        vars[i] = symbols(f'x{i+1}')
+
+    # Creamos la ecuación a partir del vector de coeficientes
+    ecuacion = 0
+    for i in range(len(coeficientes)):
+        if coeficientes[i] != 0:
+            ecuacion += (int(coeficientes[i]) % alpha)*vars[i]
+
+    # Despejamos la variable seleccionada
+    variable_despeje = vars[posicion_despeje]
+    print(f"La ecuación {posicion_despeje + 1} es: {ecuacion} = 0")
+    solucion = solve(ecuacion, variable_despeje)
+
+    # convertimos las ecuaciones al espacio Z_alpha
+    for var in vars:
+        coef = solucion[0].coeff(var)
+        solucion[0] = solucion[0] - coef*var + (coef % alpha)*var
+
+    # Imprimimos la ecuación y la solución
+    print(str(variable_despeje), " = ", solucion[0])
+    return solucion[0]
 
 
 d = 9999
@@ -115,9 +145,23 @@ print("Generator matrix in standard form:")
 for fila in gen_matrix:
     print([int(i) for i in fila])
 
-for fila in gen_matrix:
-    ecuacion = 0
-    for i in range(len(fila)):
-        ecuacion += int(fila[i]) * sympy.Symbol(f'x_{i+1}')
-    ecuacion = sympy.Eq(ecuacion, 0)
-    print(sympy.latex(ecuacion, mode='inline'))
+vector = [1]*len(gen_matrix[0])
+
+for i in range(len(gen_matrix)):
+    eq = calcular_ecuaciones(gen_matrix[i], i)
+    eq = Poly(eq)
+    coef_vector = eq.coeffs()
+    vector[i] = coef_vector
+
+H = np.zeros((len(vector[0]), len(gen_matrix[0])))
+counter = 0
+
+for i in range(len(vector)):
+    if type(vector[i]) == type(vector):
+        for j in range(len(vector[i])):
+            H[j][i] = int((vector[i])[j])
+    else:
+        H[counter][i] = 1
+        counter += 1
+
+print(f"H = {H}")
