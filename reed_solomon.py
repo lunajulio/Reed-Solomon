@@ -85,7 +85,7 @@ while (n < d or d < 0):
 
 alpha = int(input("Which alphabet do you want to work in? \n Enter the number that you wanna do: \n 2- Binary \n 3- Ternary \n 4- Quaternary \n or more... \n"))
 
-while alpha < 2:
+while alpha < 2 or n > alpha:
     alpha = int(input("Which alphabet do you want to work in? \n Enter the number that you wanna do: \n 2- Binary \n 3- Ternary \n 4- Quaternary \n or more... \n"))
 
 # Calculamos el grado k
@@ -93,10 +93,7 @@ k = n - d + 1
 # Hallamos los polinomios del código
 x = sympy.symbols('x')
 coefficients = [sympy.symbols('a%d' % i) for i in range(k)]
-print("coeficients: ", coefficients)
-
 values_coefficients = list(range(alpha))
-print(values_coefficients)
 
 polynomies = polinomio(coefficients, values_coefficients)
 
@@ -203,15 +200,15 @@ for i in range(len(sindromes)):
     for j in range(len(sindromes[0])):
         (sindromes[i][j])[0] %= alpha
 
-# corregimos el codeword  recivido
+# corregimos el codeword  recibido
 recivo = input("Enter the recived codeword: ")
-# hallamos el síndrome del codeword recivido
+# hallamos el síndrome del codeword recibido
 sind = sindrome(H, recivo)
 for num in sind:
     num[0] %= alpha
 # encontramos al lider de la clase correspondiente del síndrome
 lid = lideres[sindromes.index(sind)]
-# restamos el codeword recivido y el lider de la clase lateral
+# restamos el codeword recibido y el lider de la clase lateral
 resta = ''
 for i in range(len(recivo)):
     resta += str((int(recivo[i])-int(lid[i])) % alpha)
