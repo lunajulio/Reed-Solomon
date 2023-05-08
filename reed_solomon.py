@@ -3,24 +3,6 @@ import itertools
 import numpy as np
 from sympy import *
 
-'''def polinomio(coeficients, values_coeficients):
-    list = []
-    # Sustituir valores de coeficientes en el polinomio usando ciclos anidados
-    for a0_val in values_coeficients:
-        p = sympy.Poly(sum([coeficients[i] * x**i for i in range(d)]), x)
-        p_a0 = p.subs(coeficients[d-1], a0_val)  # Sustituir el primer coeficiente
-        for coef_val in values_coeficients:
-            p_ai = p_a0
-            for i in range(d-1):
-                p_ai = p_ai.subs(coeficients[i], coef_val)  # Sustituir los demás coeficientes
-            print(p_ai)
-            list.append(p_ai)
-    return list '''
-
-
-def decodificate():
-    return ""
-
 
 def get_codeword(poly, values_coefficients, alpha):
     codeword = ""
